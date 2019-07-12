@@ -1,0 +1,60 @@
+// iniciar
+sudo systemctl start mongod.service
+mongo
+use teste10
+
+// criar coleção
+db.createCollection("posts");
+
+// inserts 
+db.posts.insert({
+	autor: {
+		nome:"Joao",
+		email:"joao@gmail.com",
+		senha:"2221112"
+	},
+	titulo: "Java web",
+	conteudo: "spring",
+	data: "20-05-2018",
+	cometarios: [
+		{
+			mensagem: "ótimo , amo java ",
+			data: "20-04-2019"
+		},
+		{
+			mensagem:"otimo post!!!",
+			data: "20-05-2019"
+		}
+	]
+});
+
+db.posts.insert({
+	autor: {
+		nome:"William",
+		email:"william@gmail.com",
+		senha:"22333"
+	},
+	titulo: "PHP",
+	conteudo: "spring",
+	data: "20-05-2018",
+	cometarios: [
+		{
+			mensagem: "ótimo , amo java ",
+			data: "20-04-2019"
+		},
+		{
+			mensagem:"otimo post!!!",
+			data: "20-05-2019"
+		}
+	]
+});
+
+// selects 
+// todos os posts
+db.posts.find();
+
+// posts com titulo x
+db.posts.find({titulo : "Java web"});
+
+// posts com data x
+db.posts.find({data: "20-05-2018"});

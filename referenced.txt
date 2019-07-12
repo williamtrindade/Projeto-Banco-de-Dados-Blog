@@ -1,0 +1,31 @@
+use teste20
+
+db.createCollection("posts");
+db.createCollection("users");
+db.createCollection("comentarios");
+
+// inserts
+db.users.insert({
+	nome: "william",
+	email: "william@gmail.com",
+	senha: "1234"
+});
+db.posts.insert({
+	titulo: "php",
+	conteudo: "dede",
+	data: "20-05-2018",
+	autor_id: ObjectId("5d289ebb9f956a04882d8332")
+	
+});
+db.comentarios.insert(
+{
+	mensagem: "ddsfsd",
+	data: "20-05-2019",
+	post_id : ObjectId("5d289f499f956a04882d8333")
+}
+);
+
+// selects
+db.posts.find();
+db.users.find();
+db.comentarios.find();

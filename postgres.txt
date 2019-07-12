@@ -1,0 +1,64 @@
+/* CREATE TABLES : */
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50),
+    email VARCHAR(50),
+    senha VARCHAR(30)
+);
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(50),
+    conteudo VARCHAR,
+    data DATE,
+    usuario_id SERIAL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
+);
+CREATE TABLE comentarios (
+    id SERIAL PRIMARY KEY,
+    mensagem VARCHAR(300),
+    data DATE,
+    post_id SERIAL,
+    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
+);
+
+CREATE TABLE likes (
+    post_id SERIAL,
+    usuario_id SERIAL,
+    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE SET NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE SET NULL
+);
+
+/* INSERTS */
+/* USUARIOS */
+INSERT INTO usuarios (nome, email, senha) VALUES ('William', 'william@gmail.com', '1234');
+INSERT INTO usuarios (nome, email, senha) VALUES ('Leo', 'leo@gmail.com', '12345');
+INSERT INTO usuarios (nome, email, senha) VALUES ('Joao', 'jaao@gmail.com', '123456');
+
+/*POSTS*/
+INSERT INTO posts (titulo, conteudo, data, usuario_id) VALUES ('Criar blog em laravel', 'blog 2.0 laravel 5.8 2019', '01-02-2019', 1);
+INSERT INTO posts (titulo, conteudo, data, usuario_id) VALUES ('Spring MVC tutorial', 'data jpa, security ...', '01-03-2019', 2);
+INSERT INTO posts (titulo, conteudo, data, usuario_id) VALUES ('Views no Postgres', 'postgres sql ', '01-04-2019', 3);
+
+/* COMENTARIOS */
+INSERT INTO comentarios (mensagem, data, post_id)  VALUES ('MUITO bom !!!', '20-01-2020', 1);
+INSERT INTO comentarios (mensagem, data, post_id)  VALUES ('Ótima explicação', '20-01-2020', 2);
+INSERT INTO comentarios (mensagem, data, post_id)  VALUES ('Oque é Postgres?', '20-01-2020', 3);
+
+/*LIKES*/
+INSERT INTO likes (post_id, usuario_id) VALUES (1, 1);
+INSERT INTO likes (post_id, usuario_id) VALUES (2, 1);
+INSERT INTO likes (post_id, usuario_id) VALUES (3, 2);
+INSERT INTO likes (post_id, usuario_id) VALUES (1, 3);
+
+/*3 CONSULTAS*/
+/*POSTS QUE WILLIAM DEU LIKE*/
+SELECT titulo, conteudo, posts.data FROM posts, likes, usuarios WHERE likes.usuario_id = usuarios.id AND usuarios.nome = 'William' AND posts.id = likes.post_id;
+
+/* COMENTARIOS DO POST 'Criar blog em laravel'*/
+SELECT mensagem, comentarios.data FROM comentarios, posts WHERE comentarios.post_id = posts.id AND posts.titulo = 'Criar blog em laravel';
+
+/* COMENTARIOS DOS POSTS QUE WILLIAM DEU LIKE*/
+SELECT mensagem, comentarios.data from comentarios, posts, likes, usuarios WHERE 
+likes.usuario_id = usuarios.id AND usuarios.nome = 'William' AND 
+posts.id = likes.post_id AND comentarios.post_id = posts.id;
