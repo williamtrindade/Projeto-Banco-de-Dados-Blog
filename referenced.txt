@@ -1,13 +1,18 @@
 use teste20
 
 db.createCollection("posts");
-db.createCollection("users");
+db.createCollection("usuarios");
 db.createCollection("comentarios");
 
 // inserts
-db.users.insert({
+db.usuarios.insert({
 	nome: "william",
 	email: "william@gmail.com",
+	senha: "1234"
+});
+db.usuarios.insert({
+	nome: "joao",
+	email: "joao@gmail.com",
 	senha: "1234"
 });
 db.posts.insert({
@@ -26,6 +31,18 @@ db.comentarios.insert(
 );
 
 // selects
-db.posts.find();
-db.users.find();
-db.comentarios.find();
+// Posts da data x
+db.posts.find({
+	data: "20-05-2018"
+});
+
+// Usuarios com nome 
+db.usuarios.findOne({
+	nome: "william"
+});
+
+// Usuario com nome e email
+db.usuarios.find({
+	nome:"william",
+	email:"william@gmail.com"
+});
